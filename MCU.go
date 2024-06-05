@@ -181,6 +181,7 @@ func main_hapus_pasien(A *tData_pasien, B tLayanan, n *int) {
 	} else if opsi == 2 {
 		fmt.Print("Masukkan ID pasien: ")
 		fmt.Scan(&y)
+		ascend_insertion_sort(&*A, *n)
 		idx = cari_id(*A, *n, y)
 	}
 	hapus_pasien(&*A, B, &*n, idx)
@@ -200,22 +201,20 @@ func cari_nama(A tData_pasien, n int, x string) int {
 }
 
 func cari_id(A tData_pasien, n, y int) int {
-	ascend_insertion_sort(&A, n)
 	var left, mid, right int
 	left = 0
 	right = n - 1
-	idx := -1
-	for left <= right && A[mid].id != y{
+	for left <= right {
 		mid = (left + right) / 2
-		if y < A[mid].id{
+		if A[mid].id == y {
+			return mid
+		} else if y < A[mid].id {
 			right = mid - 1
-		}else if y > A[mid].id{
+		} else {
 			left = mid + 1
-		}else if mid == A[mid].id{
-			idx = mid
 		}
 	}
-	return idx
+	return -1
 }
 
 func ascend_insertion_sort(A *tData_pasien, n int) {
@@ -266,6 +265,7 @@ func main_edit_pasien(A *tData_pasien, B *tLayanan, n, m int) {
 	} else if opsi == 2 {
 		fmt.Print("Masukkan ID pasien: ")
 		fmt.Scan(&y)
+		ascend_insertion_sort(&*A, n)
 		idx = cari_id(*A, n, y)
 	}
 	edit_pasien(&*A, &*B, n, m, idx)
@@ -361,6 +361,7 @@ func cari_pasien_individu(A tData_pasien, B tLayanan, n int) {
 	} else if opsi == 2 {
 		fmt.Print("Masukkan ID Pasien: ")
 		fmt.Scan(&y)
+		ascend_insertion_sort(&A, n)
 		display_pasien(A, cari_id(A, n, y))
 	}
 }
@@ -388,8 +389,9 @@ func display_pasien_periodik(A tData_pasien,n, y1,m1,d1,y2,m2,d2 int)  {
 	
 	hari1= y1 * 360 + bulan_hari(m1,y1) + d1
 	hari2= y2 * 360 + bulan_hari(m2,y2) + d2
-	hari_cek = A[i].waktu.tahun * 360 + bulan_hari(A[i].waktu.bulan,A[i].waktu.tahun) + A[i].waktu.tanggal
+	
 	for i = 0; i < n; i++ {
+		hari_cek = A[i].waktu.tahun * 360 + bulan_hari(A[i].waktu.bulan,A[i].waktu.tahun) + A[i].waktu.tanggal
 		if hari2 >= hari_cek && hari1 <= hari_cek{
 			display_pasien(A,i)
 		}
@@ -645,8 +647,9 @@ func hitung_pemasukkan(A tData_pasien,n, y1,m1,d1,y2,m2,d2 int) {
 	var hari1, hari2, hari_cek int
 	hari1= y1 * 360 + bulan_hari(m1,y1) + d1
 	hari2= y2 * 360 + bulan_hari(m2,y2) + d2
-	hari_cek = A[i].waktu.tahun * 360 + bulan_hari(A[i].waktu.bulan,A[i].waktu.tahun) + A[i].waktu.tanggal
+	
 	for i = 0; i < n; i++ {
+		hari_cek = A[i].waktu.tahun * 360 + bulan_hari(A[i].waktu.bulan,A[i].waktu.tahun) + A[i].waktu.tanggal
 		if hari2 >= hari_cek && hari1 <= hari_cek{
 			total+= A[i].jenis.harga
 		}
