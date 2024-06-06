@@ -32,20 +32,29 @@ func main() {
         {kategori: "Diamond", harga: 500000},
     }
 	dat_pas = [NMAX]data_pasien{
+		{nama: "putri", id: 13, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[0], rekap: "kanker"},
         {nama: "susilo", id: 12, waktu: periode{tahun: 2021, bulan: 9, tanggal: 13}, jenis: dat_lay[0], rekap: "buta"},
         {nama: "bambang", id: 15, waktu: periode{tahun: 2022, bulan: 12, tanggal: 25}, jenis: dat_lay[1], rekap: "lumpuh"},
+        {nama: "ihab", id: 14, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[1], rekap: "sifilis"},
+        {nama: "hasanain", id: 16, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[2], rekap: "sehat"},
         {nama: "yudhoyono", id: 17, waktu: periode{tahun: 2023, bulan: 3, tanggal: 9}, jenis: dat_lay[2], rekap: "HIV"},
         {nama: "megawati", id: 11, waktu: periode{tahun: 2024, bulan: 10, tanggal: 3}, jenis: dat_lay[3], rekap: "sakit"},
+        {nama: "frizanka", id: 9, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[3], rekap: "demam"},
         {nama: "soekarno", id: 10, waktu: periode{tahun: 2019, bulan: 1, tanggal: 31}, jenis: dat_lay[4], rekap: "kesurupan"},
-        {nama: "putri", id: 13, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[4], rekap: "cacar air"},
+        {nama: "aryaguna", id: 8, waktu: periode{tahun: 2018, bulan: 8, tanggal: 17}, jenis: dat_lay[4], rekap: "cacar air"},
     }
 	home(&dat_pas, &dat_lay)
 }
 
 func home(A *tData_pasien, B *tLayanan) {
 	var opsi, opsi2 int
-	var n, m int = 6, 5
+	var n, m int = 10, 5
 	for opsi != 4 {
+		fmt.Println("===================================================")
+		fmt.Println("||                                               ||")
+		fmt.Println("||       Frizanka Aryaguna || 103032300135       ||")
+		fmt.Println("||     Ihab Hasanain Akmal || 103032330054       ||")
+		fmt.Println("||                                               ||")
 		fmt.Println("===================================================")
 		fmt.Println("Selamat datang Di Layanan Medical Check Up")
 		fmt.Println("Pilih Opsi berikut:")
@@ -377,8 +386,9 @@ func cari_pasien_periode(A tData_pasien, B tLayanan, n int) {
 	}
 	fmt.Println("Masukkan Waktu Akhir (YYYY/MM/DD): ")
 	fmt.Scan(&y2,&m2,&d2)
-	for !cek_waktu_pasien(y2,m2,d2) || y1 < y2 || (y1==y2 && m2 > m1) || (y1==y2 && m2 == m1 && d2 > d1){
+	for !cek_waktu_pasien(y2,m2,d2) || y1 > y2 || (y1==y2 && m2 < m1) || (y1==y2 && m2 == m1 && d2 < d1){
 		fmt.Scan(&y2,&m2,&d2)
+		fmt.Println("Input Invalid")
 	}
 	display_pasien_periodik(A,n,y1,m1,d1,y2,m2,d2)
 }
@@ -523,8 +533,6 @@ func edit_layanan(A *tData_pasien, B *tLayanan, n,m, idx int) {
 	}
 	B[idx].harga = harga
 	update_harga_layanan(&*A,*B, n,idx)
-
-
 }
 
 func update_harga_layanan(A *tData_pasien, B tLayanan, n,idx int)  {
@@ -584,8 +592,14 @@ func main_tambah_paket(B *tLayanan, m *int)  {
 		fmt.Scan(&nama)
 	}
 	B[*m].kategori = nama
+
 	fmt.Print("Masukkan Harga Paket: ")
 	fmt.Scan(&B[*m].harga)
+	for B[*m].harga < 0 {
+		fmt.Print("Harga tidak boleh negatif")
+		fmt.Print("Masukkan Harga Paket: ")
+		fmt.Scan(&B[*m].harga)
+	}
 	*m++
 }
 
@@ -629,6 +643,7 @@ func main_display(A tData_pasien, B tLayanan, n int) {
 		fmt.Scan(&y2,&m2,&d2)
 		for !cek_waktu_pasien(y2,m2,d2) || y1 > y2 || (y1==y2 && m2 < m1) || (y1==y2 && m2 == m1 && d2 < d1){
 			fmt.Scan(&y2,&m2,&d2)
+			fmt.Println("Input Invalid")
 		}
 		hitung_pemasukkan(A,n,y1,m1,d1,y2,m2,d2)
 	} else if opsi == 2 {
